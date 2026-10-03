@@ -1,4 +1,4 @@
-name: Java CI - Multiple Jobs
+name: Java CI
 
 on:
   push:
@@ -21,44 +21,32 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      - name: Compile
-        run: mvn -B clean compile
-
-
-  test:
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      - name: Run tests
-        run: mvn -B test
-
-
-  package:
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
+          java-version: '21'
           distribution: 'temurin'
 
       - name: Build JAR
-        run: mvn -B package -DskipTests
+        run: mvn -B clean package -DskipTests
+
+      - name: Upload JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: student-management-jar
+          path: target/*.jar
+
+
+  package:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download JAR
+        uses: actions/download-artifact@v4
+        with:
+          name: student-management-jar
+          path: target/
+
+      - name: Verify JAR
+        run: ls -la target/
