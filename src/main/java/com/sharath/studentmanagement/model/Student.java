@@ -36,4 +36,7 @@ public class Student {
 
     @Size(max = 50)
     private String department;
+
+    @Size(max = 15)
+    private String phone;
 }
