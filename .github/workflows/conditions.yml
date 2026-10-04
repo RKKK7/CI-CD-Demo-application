@@ -1,0 +1,27 @@
+name: Conditions Demo
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test-conditions:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Step 1 - Success
+        run: echo "Step 1 succeeded"
+
+      - name: Step 2 - Intentional Failure
+        run: exit 1
+
+      - name: Step 3 - Normal Step
+        run: echo "This should NOT run"
+
+      - name: Step 4 - Failure Handler
+        if: ${{ failure() }}
+        run: echo "A previous step failed!"
+
+      - name: Step 5 - Always Run
+        if: ${{ always() }}
+        run: echo "This runs regardless of previous result"
