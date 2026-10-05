@@ -1,52 +1,9 @@
-name: Java CI
+name: Call Java CI
 
 on:
   push:
-    branches:
-      - main
-
   pull_request:
-    branches:
-      - main
 
 jobs:
-
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-
-      - name: Build JAR
-        run: mvn -B clean package -DskipTests
-
-      - name: Upload JAR
-        uses: actions/upload-artifact@v4
-        with:
-          name: student-management-jar
-          path: target/*.jar
-
-
-  package:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Download JAR
-        uses: actions/download-artifact@v4
-        with:
-          name: student-management-jar
-          path: target/
-
-      - name: Verify JAR
-        run: ls -la target/
+  java-ci:
+    uses: ./.github/workflows/reusable-java-ci.yml
