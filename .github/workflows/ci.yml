@@ -1,9 +1,31 @@
-name: Call Java CI
+name: Java Matrix Demo
 
 on:
   push:
   pull_request:
 
 jobs:
-  java-ci:
-    uses: ./.github/workflows/reusable.yml
+  test:
+    strategy:
+      fail-fast: false
+
+      matrix:
+        java: ['17', '21', '25']
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+
+      - name: Show Java version
+        run: java -version
+
+      - name: Build with Maven
+        run: mvn -B package
