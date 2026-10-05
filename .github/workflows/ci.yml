@@ -6,4 +6,4 @@ on:
 
 jobs:
   java-ci:
-    uses: ./.github/workflows/reusable-java-ci.yml
+    uses: ./.github/workflows/reusable.yml
